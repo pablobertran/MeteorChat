@@ -1,0 +1,36 @@
+<template name="Signup">
+    <div id="homepages">
+        <hgroup>
+            <h1>Meteor Chat</h1>
+            <h3>Create new account</h3>
+        </hgroup>
+        <form>
+            <div class="group">
+                <input type="name" name="signupName" id="name"><span class="highlight"></span><span class="bar"></span>
+                <label>Name</label>
+            </div>
+            <div class="group">
+                <input type="email" name="signupEmail" id="email"><span class="highlight"></span><span class="bar"></span>
+                <label>Email</label>
+            </div>
+            <div class="group">
+                <input type="password" name="signupPassword" id="password"><span class="highlight"></span><span class="bar"></span>
+                <label>Password</label>
+            </div>
+
+            {{#if errorMessage}}
+                <div class="alert">
+                    <span><i class="icon-sign"></i>{{errorMessage}}</span>
+                </div>
+            {{/if}}
+
+            <button type="submit" class="button buttonBlue">Sign Up
+                <div class="ripples buttonRipples"><span class="ripplesCircle"></span></div>
+            </button>
+
+            <p>
+                <button type="button" class="button buttonGreen">Go Back</button>
+            </p>
+        </form>
+    </div>
+</template>

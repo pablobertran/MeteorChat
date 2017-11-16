@@ -1,0 +1,39 @@
+<template name="Message_item">
+
+    <li class="{{liClass message}} clearfix"><span class="chat-img {{spanClass message}}">
+                            <img src="http://placehold.it/50/{{getCircleColor setting.color}}/fff&text={{getLetters message.userId}}" alt="User Avatar" class="img-circle"/>
+                        </span>
+        <div class="chat-body clearfix">
+            <div class="header">
+                {{#if isMe}}
+                    <small class="text-muted"><span class="glyphicon glyphicon-time"></span>{{FormatDateMessage message.createdAt}}</small>&nbsp;&nbsp;<span class="glyphicon glyphicon-trash"></span>
+                    <strong class="pull-right primary-font">{{getUsername message.userId}}</strong>
+                {{else}}
+                    <strong class="primary-font">{{getUsername message.userId}}</strong>
+                    <small class="pull-right text-muted">
+                        <span class="glyphicon glyphicon-time"></span>{{FormatDateMessage message.createdAt}}
+                    </small>
+                {{/if}}
+            </div>
+            <p class="text-{{liClass message}}" style="color:{{getColor setting.color}}">
+                {{ message.message }}
+            </p>
+        </div>
+
+    </li>
+
+    <!--<li class="left clearfix"><span class="chat-img pull-left">
+                            <img src="http://placehold.it/50/55C1E7/fff&text=U" alt="User Avatar" class="img-circle" />
+                        </span>
+        <div class="chat-body clearfix">
+            <div class="header">
+                <strong class="primary-font">Jack Sparrow</strong> <small class="pull-right text-muted">
+                <span class="glyphicon glyphicon-time"></span>14 mins ago</small>
+            </div>
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare
+                dolor, quis ullamcorper ligula sodales.
+            </p>
+        </div>
+    </li>-->
+</template>

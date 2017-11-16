@@ -1,0 +1,30 @@
+<template name="Home">
+    <div id="homepages">
+        <hgroup>
+            <h1>Meteor Chat</h1>
+            <h3>Please sign in</h3>
+        </hgroup>
+        <form>
+            <div class="group">
+                <input type="email" name="email" id="email"><span class="highlight"></span><span class="bar"></span>
+                <label>Email</label>
+            </div>
+            <div class="group">
+                <input type="password" name="password" id="password"><span class="highlight"></span><span class="bar"></span>
+                <label>Password</label>
+            </div>
+            {{#if errorMessage}}
+                <div class="alert">
+                    <span><i class="icon-sign"></i>{{errorMessage}}</span>
+                </div>
+            {{/if}}
+            <button type="submit" class="button buttonBlue">Login
+                <div class="ripples buttonRipples"><span class="ripplesCircle"></span></div>
+            </button>
+
+            <p>
+                <button type="button" class="button buttonGreen">Create an Account</button>
+            </p>
+        </form>
+    </div>
+</template>

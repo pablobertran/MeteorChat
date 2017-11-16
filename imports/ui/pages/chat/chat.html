@@ -1,0 +1,46 @@
+<template name="Chat">
+    <div class="row" style="margin-top: 10%;">
+        <div class="col-md-8 col-md-offset-2">
+            <div class="panel panel-primary chat-panel">
+                <div class="panel-heading">
+                    <span class="glyphicon glyphicon-comment"></span> Chat
+                    <span class="pickcolor">Pick a Color</span>
+                    <input type="text" class="color-select" value="#5367ce" />
+                    <div class="btn-group pull-right">
+                        {{> loginButtons}}
+
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <ul class="chat">
+                            {{#if Template.subscriptionsReady}}
+                                {{#each message in messages}}
+                                    {{> Message_item (messageArgs message)}}
+                                {{else}}
+                                    <div class="wrapper-message">
+                                        <div class="title-message">No Messages</div>
+                                        <div class="subtitle-message">Send it!</div>
+                                    </div>
+                                {{/each}}
+                            {{else}}
+                                <div class="wrapper-message">
+                                    <div class="title-message">Loading...</div>
+                                </div>
+                            {{/if}}
+                        </ul>
+                    </div>
+                    <form class="panel-footer">
+                        <div class="input-group">
+                                <input type="text" class="form-control input-sm" placeholder="Type your message here..." name="message" id="message-text" />
+                                <span class="input-group-btn">
+                            <button class="btn btn-warning btn-sm" type="submit" id="btn-chat">
+                                Send</button>
+                                    </span>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
