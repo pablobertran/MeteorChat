@@ -30,3 +30,6 @@ ian:accounts-ui-bootstrap-3
 momentjs:moment
 twbs:bootstrap
 risul:bootstrap-colorpicker
+meteortesting:mocha
+practicalmeteor:chai
+xolvio:cleaner

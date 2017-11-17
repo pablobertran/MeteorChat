@@ -2,12 +2,17 @@
   "name": "chatApp",
   "private": true,
   "scripts": {
-    "start": "meteor run"
+    "start": "meteor run",
+    "test-watch": "meteor test --driver-package meteortesting:mocha"
   },
   "dependencies": {
     "babel-runtime": "^6.26.0",
     "bcrypt": "^1.0.3",
     "meteor-node-stubs": "^0.3.2",
     "moment": "^2.19.2"
+  },
+  "devDependencies": {
+    "chromedriver": "^2.33.2",
+    "selenium-webdriver": "^3.0.0-beta-2"
   }
 }
