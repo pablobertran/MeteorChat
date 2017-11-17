@@ -351,6 +351,8 @@
         <item url="file://$USER_HOME$/.meteor/packages/blaze-tools/1.0.10/web.browser/preamble.js" />
         <item url="file://$USER_HOME$/.meteor/packages/blaze-tools/1.0.10/web.browser/tokens.js" />
         <item url="file://$USER_HOME$/.meteor/packages/blaze-tools/1.0.10/web.browser/tojs.js" />
+        <item url="file://$USER_HOME$/.meteor/packages/dburles_factory/1.1.0/web.browser/factory.js" />
+        <item url="file://$USER_HOME$/.meteor/packages/dburles_factory/1.1.0/web.browser/factory_tests.js" />
         <item url="file://$USER_HOME$/.meteor/packages/blaze/2.3.2/web.browser/exceptions.js" />
         <item url="file://$USER_HOME$/.meteor/packages/practicalmeteor_mocha-core/1.0.1/web.browser/client.js" />
         <item url="file://$USER_HOME$/.meteor/packages/blaze/2.3.2/web.browser/attrs.js" />
@@ -793,6 +795,8 @@
       <root url="file://$USER_HOME$/.meteor/packages/blaze-tools/1.0.10/web.browser/preamble.js" />
       <root url="file://$USER_HOME$/.meteor/packages/blaze-tools/1.0.10/web.browser/tokens.js" />
       <root url="file://$USER_HOME$/.meteor/packages/blaze-tools/1.0.10/web.browser/tojs.js" />
+      <root url="file://$USER_HOME$/.meteor/packages/dburles_factory/1.1.0/web.browser/factory.js" />
+      <root url="file://$USER_HOME$/.meteor/packages/dburles_factory/1.1.0/web.browser/factory_tests.js" />
       <root url="file://$USER_HOME$/.meteor/packages/blaze/2.3.2/web.browser/exceptions.js" />
       <root url="file://$USER_HOME$/.meteor/packages/practicalmeteor_mocha-core/1.0.1/web.browser/client.js" />
       <root url="file://$USER_HOME$/.meteor/packages/blaze/2.3.2/web.browser/attrs.js" />

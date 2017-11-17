@@ -1,15 +1,18 @@
 import {Meteor} from 'meteor/meteor';
+import { Factory } from 'meteor/dburles:factory';
 import {Accounts} from 'meteor/accounts-base';
 import { FlowRouter } from 'meteor/kadira:flow-router';
 import {chai, assert, expect} from 'meteor/practicalmeteor:chai';
+import { Template } from 'meteor/templating';
 import {resetDatabase} from 'meteor/xolvio:cleaner';
+import { $ } from 'meteor/jquery';
+import { Todos } from '../../../api/todos/todos';
+import { withRenderedTemplate } from '../test-helpers';
 
-import './methods';
-import {Messages} from './messages'
+import '../../../api/messages/messages';
+import '../../../api/users/server/publications';
 
-
-describe('[Messages]', () => {
-    const message = "Test message";
+describe('[Chat Layout]', function () {
     const demouser = {
         email: 'pablo.b@scopicsoftware.com',
         password: 'test123',
@@ -18,8 +21,21 @@ describe('[Messages]', () => {
         }
     };
 
+    Factory.define('message', Messages, {
+        userId: () => Meteor.userId(),
+        message: () => faker.lorem.sentence(),
+        createdAt: () => new Date(),
+    });
+
     before(function () {
         resetDatabase();
+    });
+
+    beforeEach(function () {
+        Template.registerHelper('_', key => key);
+    });
+    afterEach(function () {
+        Template.deregisterHelper('_');
     });
 
     if (Meteor.isClient) {
@@ -37,33 +53,10 @@ describe('[Messages]', () => {
                 expect(success).to.equal(true);
             });
         });
-    }
 
-    if (Meteor.isServer) {
-
-        it('Should send a message', function () {
-            Meteor.call('messages.insert', message);
-            let m = Messages.findOne({
-                message: {
-                    $eq: message
-                }
-            });
-            expect(m.message).to.equal(message);
-        });
-
-        it('Should remove a message', function () {
-            let m = Messages.findOne({
-                message: {
-                    $eq: message
-                }
-            });
-            Meteor.call('message.remove', m);
-            let c = Messages.find({
-                message: {
-                    $eq: message
-                }
-            }).count();
-            expect(c).to.equal(0);
+        it('Should insert a message into database', function(){
+            let message = Factory.create('message');
         });
     }
+
 });

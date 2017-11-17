@@ -33,3 +33,4 @@ risul:bootstrap-colorpicker
 meteortesting:mocha
 practicalmeteor:chai
 xolvio:cleaner
+dburles:factory
