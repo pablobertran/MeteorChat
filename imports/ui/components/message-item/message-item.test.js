@@ -11,7 +11,7 @@ import faker from 'faker';
 import {withRenderedTemplate} from '../../test-helpers.js';
 
 import './message-item';
-import '../layouts/body/body.js'
+import '../layouts/body/body';
 
 describe('message-item', () => {
 
