@@ -1,62 +1,85 @@
+import {Factory} from 'meteor/dburles:factory';
+import {chai} from 'meteor/practicalmeteor:chai';
+import {Template} from 'meteor/templating';
 import {Meteor} from 'meteor/meteor';
-import { Factory } from 'meteor/dburles:factory';
-import {Accounts} from 'meteor/accounts-base';
-import { FlowRouter } from 'meteor/kadira:flow-router';
-import {chai, assert, expect} from 'meteor/practicalmeteor:chai';
-import { Template } from 'meteor/templating';
+import {$} from 'meteor/jquery';
+import {Random} from 'meteor/random';
+import {Messages} from "../../../api/messages/messages";
 import {resetDatabase} from 'meteor/xolvio:cleaner';
-import { $ } from 'meteor/jquery';
-import { Todos } from '../../../api/todos/todos';
-import { withRenderedTemplate } from '../test-helpers';
+import faker from 'faker';
 
-import '../../../api/messages/messages';
-import '../../../api/users/server/publications';
+import {withRenderedTemplate} from '../../test-helpers.js';
 
-describe('[Message Item]', function () {
-    const demouser = {
-        email: 'pablo.b@scopicsoftware.com',
+import './message-item';
+import '../layouts/body/body.js'
+
+describe('message-item', () => {
+
+    let userId = null;
+    let userFct = null;
+
+    Factory.define('message', Messages, {
+        message: () => faker.lorem.sentence(),
+        createdAt: () => new Date(),
+    });
+
+    const user = {
+        email: 'pablo.b1@scopicsoftware.com',
         password: 'test123',
         profile: {
             name: 'Pablo Bertran'
         }
     };
 
-    Factory.define('message', Messages, {
-        userId: () => Meteor.userId(),
-        message: () => faker.lorem.sentence(),
-        createdAt: () => new Date(),
+    beforeEach(() => {
+        Template.registerHelper('_', key => key);
+
+
+        // save the original user fct
+        //userFct = Meteor.user;
+
+        // Generate a real user, otherwise it is hard to test roles
+
+    });
+
+    afterEach(() => {
+        Template.deregisterHelper('_');
+
+        //remove the user in the db
+        Meteor.users.remove(userId);
+        // restore user Meteor.user() function
+        Meteor.user = userFct;
+        // reset userId
+        userId = null;
+    });
+
+    it('Render message with simple data', () => {
+
+        Accounts.createUser(user,(user) => {
+            console.log(user);
+            console.log(userId);
+
+            let success = false;
+            Meteor.loginWithPassword(user.email, user.password, function (err) {
+                if (err) {
+                    t.errorMessage.set(err.message);
+                }
+                success = true;
+            });
+
+            let message = Factory.create('message');
+
+            withRenderedTemplate('Message_item', data, (el) => {
+                chai.assert.equal($(el).find('p').text().replace(/\n/g, '').trim(), message.message);
+            });
+
+        });
+
+
+
     });
 
     before(function () {
         resetDatabase();
     });
-
-    beforeEach(function () {
-        Template.registerHelper('_', key => key);
-    });
-    afterEach(function () {
-        Template.deregisterHelper('_');
-    });
-
-    if (Meteor.isClient) {
-
-        it('Should create a user and login', function () {
-            Accounts.createUser(demouser, function () {
-                let success = false;
-                Meteor.loginWithPassword(demouser.email, demouser.password, function (err) {
-                    if (err) {
-                        t.errorMessage.set(err.message);
-                    }
-                    success = true;
-                });
-
-                expect(success).to.equal(true);
-            });
-        });
-
-        it('Should insert a message into database', function(){
-            let message = Factory.create('message');
-        });
-    }
-
 });
