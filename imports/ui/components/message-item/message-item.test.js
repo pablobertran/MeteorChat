@@ -5,81 +5,92 @@ import {Meteor} from 'meteor/meteor';
 import {$} from 'meteor/jquery';
 import {Random} from 'meteor/random';
 import {Messages} from "../../../api/messages/messages";
+import {Settings} from "../../../api/settings/settings";
 import {resetDatabase} from 'meteor/xolvio:cleaner';
-import faker from 'faker';
 
 import {withRenderedTemplate} from '../../test-helpers.js';
 
-import './message-item';
-import '../layouts/body/body';
+import './message-item/message-item';
+import '../../layouts/body/body.js'
 
 describe('message-item', () => {
 
-    let userId = null;
-    let userFct = null;
-
-    Factory.define('message', Messages, {
-        message: () => faker.lorem.sentence(),
-        createdAt: () => new Date(),
-    });
-
     const user = {
-        email: 'pablo.b1@scopicsoftware.com',
+        email: 'pablo.b10@scopicsoftware.com',
         password: 'test123',
         profile: {
             name: 'Pablo Bertran'
         }
     };
 
+
+    Factory.define('settings', Settings, {
+        color: '#000000'
+    });
+
     beforeEach(() => {
         Template.registerHelper('_', key => key);
-
-
-        // save the original user fct
-        //userFct = Meteor.user;
-
-        // Generate a real user, otherwise it is hard to test roles
-
     });
 
     afterEach(() => {
         Template.deregisterHelper('_');
-
-        //remove the user in the db
-        Meteor.users.remove(userId);
-        // restore user Meteor.user() function
-        Meteor.user = userFct;
-        // reset userId
-        userId = null;
     });
 
-    it('Render message with simple data', () => {
+    it('Render logged user message ', () => {
 
-        Accounts.createUser(user,(user) => {
-            console.log(user);
-            console.log(userId);
+        const message = Factory.build('message', {
+            userId: Meteor.userId()
+        });
 
-            let success = false;
-            Meteor.loginWithPassword(user.email, user.password, function (err) {
-                if (err) {
-                    t.errorMessage.set(err.message);
-                }
-                success = true;
-            });
+        const settings = Factory.build('settings', {
+            userId: Meteor.userId()
+        });
 
-            let message = Factory.create('message');
+        const data = {
+            message: message,
+            setting: settings
+        }
 
-            withRenderedTemplate('Message_item', data, (el) => {
-                chai.assert.equal($(el).find('p').text().replace(/\n/g, '').trim(), message.message);
-            });
-
+        withRenderedTemplate('Message_item', data, (el) => {
+            chai.assert.equal($(el).find('p').text().replace(/\n/g, '').trim(), message.message);
+            chai.assert.equal($(el).find('.right.clearfix').length, 1);
         });
 
 
+    });
+
+    it('Render non-logged user message ', () => {
+
+        const message = Factory.build('message', {
+            userId: 'XYZ'
+        });
+
+        const settings = Factory.build('settings', {
+            userId: 'XYZ'
+        });
+
+        const data = {
+            message: message,
+            setting: settings
+        }
+
+        withRenderedTemplate('Message_item', data, (el) => {
+            chai.assert.equal($(el).find('p').text().replace(/\n/g, '').trim(), message.message);
+            chai.assert.equal($(el).find('.left.clearfix').length, 1);
+        });
+
 
     });
 
+
+
     before(function () {
+
         resetDatabase();
+        Accounts.createUser(user);
+
+    });
+
+    after(function () {
     });
 });
