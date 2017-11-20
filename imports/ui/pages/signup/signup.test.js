@@ -10,8 +10,6 @@ import {resetDatabase} from 'meteor/xolvio:cleaner';
 
 import {withRenderedTemplate} from '../../test-helpers.js';
 
-import '../../../api/users/server/publications';
-
 describe('[Signup Layout]', function () {
 
     beforeEach(() => {

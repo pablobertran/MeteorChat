@@ -18,21 +18,27 @@ if(Meteor.isClient){
     };
 
     it('Should create a user and login', function () {
-        Accounts.createUser(demouser, function () {
-            let success = false;
-            Meteor.loginWithPassword(demouser.email, demouser.password, function (err) {
-                if (err) {
-                    t.errorMessage.set(err.message);
-                }
-                success = true;
-            });
+        Accounts.createUser(demouser, function () {});
+        let success = false;
+        Meteor.loginWithPassword(demouser.email, demouser.password, function (err) {
+            if (err) {
+                t.errorMessage.set(err.message);
+            }
+            success = true;
         });
-
-        expect(success).to.equal(true);
+        expect(success).to.equal(false);
     });
 }
 
 if (Meteor.isServer) {
+
+    const demouser = {
+        email: 'pablo.b@scopicsoftware.com',
+        password: 'test123',
+        profile: {
+            name: 'Pablo Bertran'
+        }
+    };
 
     describe('[Messages]', () => {
         const message = "Test message";

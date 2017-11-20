@@ -7,14 +7,16 @@ import {Random} from 'meteor/random';
 import {Messages} from "../../../api/messages/messages";
 import {Settings} from "../../../api/settings/settings";
 import {resetDatabase} from 'meteor/xolvio:cleaner';
+import StubCollections from 'meteor/hwillson:stub-collections';
 
 import {withRenderedTemplate} from '../../test-helpers.js';
 
-import '../message-item/message-item';
+import '../../components/message-item/message-item';
+import '../chat/chat'
 //Imported to add general helpers reference
 import '../../layouts/body/body.js'
 
-describe('message-item', () => {
+describe('chat', () => {
 
     const user = {
         email: 'pablo.b10@scopicsoftware.com',
@@ -30,6 +32,7 @@ describe('message-item', () => {
     });
 
     beforeEach(() => {
+        StubCollections.stub([Messages]);
         Template.registerHelper('_', key => key);
     });
 
@@ -37,53 +40,25 @@ describe('message-item', () => {
         Template.deregisterHelper('_');
     });
 
-    it('Render correctly list of chats ', () => {
+    it('Render correctly list of messages ', () => {
 
-        const message = Factory.build('message', {
-            userId: Meteor.userId()
-        });
+        const timestamp = new Date();
 
-        const settings = Factory.build('settings', {
-            userId: Meteor.userId()
-        });
+        const messages = _.times(3, (i) => Factory.create('message', {
+            userId: "XYZ",
+            createdAt: new Date(timestamp - (3 - i)),
+        }));
 
-        const data = {
-            message: message,
-            setting: settings
-        }
-
-        withRenderedTemplate('Message_item', data, (el) => {
-            chai.assert.equal($(el).find('p').text().replace(/\n/g, '').trim(), message.message);
-            chai.assert.equal($(el).find('.right.clearfix').length, 1);
+        withRenderedTemplate('Chat', null, (el) => {
+            const m = messages.map(m => m.message);
+            const renderedText = $(el).find('p.message')
+                .map((i, e) => $(e).text().replace(/\n/g, '').trim())
+                .toArray();
+            chai.assert.deepEqual(renderedText, m);
         });
 
 
     });
-
-    it('Render non-logged user message ', () => {
-
-        const message = Factory.build('message', {
-            userId: 'XYZ'
-        });
-
-        const settings = Factory.build('settings', {
-            userId: 'XYZ'
-        });
-
-        const data = {
-            message: message,
-            setting: settings
-        }
-
-        withRenderedTemplate('Message_item', data, (el) => {
-            chai.assert.equal($(el).find('p').text().replace(/\n/g, '').trim(), message.message);
-            chai.assert.equal($(el).find('.left.clearfix').length, 1);
-        });
-
-
-    });
-
-
 
     before(function () {
 
