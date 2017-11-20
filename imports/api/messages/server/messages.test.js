@@ -4,12 +4,11 @@ import {FlowRouter} from 'meteor/kadira:flow-router';
 import {chai, assert, expect} from 'meteor/practicalmeteor:chai';
 import {resetDatabase} from 'meteor/xolvio:cleaner';
 
-import './methods';
-import {Messages} from './messages'
+import '../methods';
+import {Messages} from '../messages'
 
+if(Meteor.isClient){
 
-describe('[Messages]', () => {
-    const message = "Test message";
     const demouser = {
         email: 'pablo.b@scopicsoftware.com',
         password: 'test123',
@@ -18,28 +17,29 @@ describe('[Messages]', () => {
         }
     };
 
-    before(function () {
-        resetDatabase();
-    });
-
-    /*if (Meteor.isClient) {
-
-        it('Should create a user and login', function () {
-            Accounts.createUser(demouser, function () {
-                let success = false;
-                Meteor.loginWithPassword(demouser.email, demouser.password, function (err) {
-                    if (err) {
-                        t.errorMessage.set(err.message);
-                    }
-                    success = true;
-                });
-
-                expect(success).to.equal(true);
+    it('Should create a user and login', function () {
+        Accounts.createUser(demouser, function () {
+            let success = false;
+            Meteor.loginWithPassword(demouser.email, demouser.password, function (err) {
+                if (err) {
+                    t.errorMessage.set(err.message);
+                }
+                success = true;
             });
         });
-    }*/
 
-    if (Meteor.isServer) {
+        expect(success).to.equal(true);
+    });
+}
+
+if (Meteor.isServer) {
+
+    describe('[Messages]', () => {
+        const message = "Test message";
+
+        before(function () {
+            resetDatabase();
+        });
 
         it('Should send a message', function () {
             Meteor.call('messages.insert', message);
@@ -65,5 +65,5 @@ describe('[Messages]', () => {
             }).count();
             expect(c).to.equal(0);
         });
-    }
-});
+    });
+}

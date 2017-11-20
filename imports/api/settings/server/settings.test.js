@@ -3,15 +3,11 @@ import { Accounts } from 'meteor/accounts-base';
 import { chai, assert, expect } from 'meteor/practicalmeteor:chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 
-import './methods';
-import {Settings} from './settings';
+import '../methods';
+import {Settings} from '../settings';
 
+if(Meteor.isClient){
 
-describe('[Settings]', () => {
-    const settings = {
-        color: '#333'
-    };
-    const newColor = '#777';
     const demouser = {
         email: 'pablo.b@scopicsoftware.com',
         password: 'test123',
@@ -20,11 +16,35 @@ describe('[Settings]', () => {
         }
     };
 
-    before(function () {
-        resetDatabase();
-    });
+    it('Should create a user and login', function () {
+        Accounts.createUser(demouser, function () {
+            let success = false;
+            Meteor.loginWithPassword(demouser.email, demouser.password, function (err) {
+                if (err) {
+                    t.errorMessage.set(err.message);
+                }
+                success = true;
+            });
+        });
 
-    if (Meteor.isServer) {
+        expect(success).to.equal(true);
+    });
+}
+
+if (Meteor.isServer) {
+
+    describe('[Settings]', () => {
+
+        before(function () {
+            resetDatabase();
+        });
+
+
+        const settings = {
+            color: '#333'
+        };
+        const newColor = '#777';
+
         it('Should save settings', function () {
             Meteor.call('settings.insert', settings);
             let m = Settings.findOne({
@@ -44,5 +64,6 @@ describe('[Settings]', () => {
             }).count();
             expect(s).to.equal(1);
         });
-    }
-});
+
+    });
+}
