@@ -10,7 +10,8 @@ import {resetDatabase} from 'meteor/xolvio:cleaner';
 
 import {withRenderedTemplate} from '../../test-helpers.js';
 
-import './message-item/message-item';
+import '../message-item/message-item';
+//Imported to add general helpers reference
 import '../../layouts/body/body.js'
 
 describe('message-item', () => {
@@ -89,8 +90,5 @@ describe('message-item', () => {
         resetDatabase();
         Accounts.createUser(user);
 
-    });
-
-    after(function () {
     });
 });

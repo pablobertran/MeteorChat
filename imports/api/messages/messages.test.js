@@ -1,6 +1,6 @@
 import {Meteor} from 'meteor/meteor';
 import {Accounts} from 'meteor/accounts-base';
-import { FlowRouter } from 'meteor/kadira:flow-router';
+import {FlowRouter} from 'meteor/kadira:flow-router';
 import {chai, assert, expect} from 'meteor/practicalmeteor:chai';
 import {resetDatabase} from 'meteor/xolvio:cleaner';
 
@@ -22,7 +22,7 @@ describe('[Messages]', () => {
         resetDatabase();
     });
 
-    if (Meteor.isClient) {
+    /*if (Meteor.isClient) {
 
         it('Should create a user and login', function () {
             Accounts.createUser(demouser, function () {
@@ -37,7 +37,7 @@ describe('[Messages]', () => {
                 expect(success).to.equal(true);
             });
         });
-    }
+    }*/
 
     if (Meteor.isServer) {
 
