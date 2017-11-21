@@ -8,34 +8,25 @@ import {resetDatabase} from 'meteor/xolvio:cleaner';
 import { $ } from 'meteor/jquery';
 
 
+import {withRenderedTemplate} from '../../test-helpers.js';
 
-describe('[Home Layout]', function () {
+import '../signup/signup';
+//Imported to add general helpers reference
+import '../../layouts/body/body.js'
 
-    beforeEach(() => {
-        Template.registerHelper('_', key => key);
-    });
+if (Meteor.isClient) {
 
-    afterEach(() => {
-        Template.deregisterHelper('_');
-    });
+    describe('[Signup Layout]', function () {
 
-    if (Meteor.isClient) {
-
-        it('Should create a user and login', function () {
-            Accounts.createUser(demouser, function () {
-                let success = false;
-                Meteor.loginWithPassword(demouser.email, demouser.password, function (err) {
-                    if (err) {
-                        t.errorMessage.set(err.message);
-                    }
-                    success = true;
-                });
-
-                expect(success).to.equal(true);
-            });
+        beforeEach(() => {
+            Template.registerHelper('_', key => key);
         });
 
-        it('Should login', () => {
+        afterEach(() => {
+            Template.deregisterHelper('_');
+        });
+
+        it('Should create a new user', () => {
 
             const user = {
                 profile: {
@@ -44,7 +35,8 @@ describe('[Home Layout]', function () {
                 email: 'pablo.b@scopicsoftware.com',
                 password: 'test123'
             }
-            let userCreated = true;
+            const data = {};
+            let userCreated = false;
 
             withRenderedTemplate('Signup', data, (el) => {
                 $(el).find('#name').val(user.profile.name);
@@ -53,12 +45,13 @@ describe('[Home Layout]', function () {
 
                 $(el).find('.button.buttonBlue').click();
 
-                stop();
-
-
-                expect(Meteor.userId()).to.be.a('string');
+                Accounts.createUser(user, function (err) {
+                    if (!err) {
+                        userCreated = true;
+                    }
+                    expect(userCreated).to.equal(true);
+                });
             });
         });
-    }
-
-});
+    });
+}
